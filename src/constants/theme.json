@@ -1,0 +1,13 @@
+{
+  "fontPrimary": "#FFF", 
+  "fontSecondary": "#B9B9B9", 
+  "buttonBackground": { 
+    "primary": "#0BBC60", 
+    "warning": "#FF8400",
+    "transparent": "transparent" 
+  }, 
+  "buttonShadow": { 
+    "primary": "#0A6D3A",
+    "transparent": "transparent"
+  } 
+}
