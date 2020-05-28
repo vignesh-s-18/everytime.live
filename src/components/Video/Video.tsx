@@ -8,7 +8,7 @@ interface IProps {
  * This function will render a <video /> element. It's suitable
  * for the video calls.
  * 
- * @todo - Add source param.
+ * @todo - Add ref prop.
  */
 const Video: React.FC<IProps> = () => (
   <video
