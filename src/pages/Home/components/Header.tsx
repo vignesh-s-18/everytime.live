@@ -9,7 +9,7 @@ const StyledHeader = styled.header`
   height: auto;
 `;
 
-const AppInfo = styled.section`
+const AppInfo = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;

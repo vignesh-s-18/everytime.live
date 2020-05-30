@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.section<any>`
+const Wrapper = styled.div<any>`
   grid-row: 1 / 2;
   width: 100%;
   height: 100%;
@@ -10,7 +10,7 @@ const Wrapper = styled.section<any>`
   grid-template-rows: 50% 50%;
 `;
 
-const VideosSection: React.FC<any> = ({ children }) => {
+const RoomVideos: React.FC<any> = ({ children }) => {
   return (
     <Wrapper wideVideos={children?.length <= 2}>
       { children }
@@ -18,4 +18,4 @@ const VideosSection: React.FC<any> = ({ children }) => {
   )
 }
 
-export default VideosSection;
+export default RoomVideos;

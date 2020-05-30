@@ -5,7 +5,7 @@ import { Video, LoadingStream, OnlyAudioStream } from '../../../components';
 import socket from '../../../socketInstance';
 import { StreamConfig } from '../types';
 
-const StreamWrapper = styled.section`
+const StreamWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
