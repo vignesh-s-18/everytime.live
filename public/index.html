@@ -25,11 +25,31 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
+    <style>
+      #loader {
+        width: 100vw;
+	height: 100vh;
+	background-color: rgb(9,9,9);
+      }
+
+      #loader > h1 {
+        color: white;
+	font-size: 1em;
+      }
+    </style>
     <title>geteveyti.me</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <!-- 
+	This loader speeds up the first contentful paint. 
+      	It also improves the app's Lighthouse perfomance score.
+      -->
+      <div id="loader">
+        <h1>Loading app...</h1>
+      </div>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
