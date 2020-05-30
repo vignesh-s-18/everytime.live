@@ -8,4 +8,5 @@ export type RoomData = {
   users?: User[];
 } | null;
 
-export type StreamConfig = MediaStreamConstraints | undefined;
+// @todo add undefined type (I have to fix some components);
+export type StreamConfig = MediaStreamConstraints;

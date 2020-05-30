@@ -4,10 +4,10 @@ import { Helmet } from 'react-helmet';
 import io from 'socket.io-client';
 import styled from 'styled-components';
 
-import { RoomData } from './types';
-import { Video } from '../../components/';
+import { RoomData, StreamConfig } from './types';
 import RoomSidebar from './components/RoomSidebar';
 import RoomVideos from './components/RoomVideos';
+import LocalStream from './components/LocalStream';
 
 const Wrapper = styled.section`
   width: 100%;
@@ -25,6 +25,11 @@ const Wrapper = styled.section`
 
 const Room = () => {
   const [roomData, setRoomData] = useState<RoomData>(null);
+  const [mediaConstraints, setMediaConstraints] = useState<StreamConfig>({
+    video: true,
+    audio: true
+  });
+  
   const { roomId } =  useParams();
 
   useEffect(() => {
@@ -42,14 +47,26 @@ const Room = () => {
     socket.on('test', console.log); */
   };
 
+  const getLocalMedia = async () => {
+    const stream: MediaStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+    return stream;
+  }
+
   return (
     <Wrapper>
       <Helmet>
         <title>{ roomId }</title>
       </Helmet>
-      <RoomSidebar roomData={roomData} />
+      <RoomSidebar 
+        roomData={roomData}
+        setMediaConstraints={setMediaConstraints}
+        mediaConstraints={mediaConstraints} 
+      />
       <RoomVideos>
-        <Video />
+        <LocalStream 
+          getLocalMedia={getLocalMedia}
+          mediaConstraints={mediaConstraints}
+        />
       </RoomVideos>
     </Wrapper>
   )

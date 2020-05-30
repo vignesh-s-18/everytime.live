@@ -14,7 +14,7 @@ const StyledInput = styled.input`
   /* 
     As the app background is black, we have to change 
     the input placeholder color. Otherwise, it won't reach
-    the minimun AAA acessibility standards. 
+    the AAA acessibility standards. 
   */
   &::placeholder {
     color: #B0B0B0;

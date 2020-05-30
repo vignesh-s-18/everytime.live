@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
-
-import { Video, LoadingStream, OnlyAudioStream } from 'components';
-import { StreamConfig } from '../types';
 import styled from 'styled-components';
-import socket from 'socketInstance';
+
+import { Video, LoadingStream, OnlyAudioStream } from '../../../components';
+import socket from '../../../socketInstance';
+import { StreamConfig } from '../types';
 
 const StreamWrapper = styled.section`
   display: flex;
@@ -52,6 +52,8 @@ const LocalStream: React.FC<IProps> = ({
 
   useEffect(() => {
     getLocalMedia().then((stream: MediaStream) => {
+      if(!stream || !elemRef.current) return;
+
       elemRef.current.srcObject = stream;
       setMediaStream(stream);
       setLoadingLocal(false);

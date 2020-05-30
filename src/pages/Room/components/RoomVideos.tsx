@@ -12,7 +12,7 @@ const Wrapper = styled.section<any>`
 
 const VideosSection: React.FC<any> = ({ children }) => {
   return (
-    <Wrapper wideVideos={children === undefined || children.length <= 2}>
+    <Wrapper wideVideos={children?.length <= 2}>
       { children }
     </Wrapper>
   )

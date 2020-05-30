@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Title, Button, Paragraph } from '../../../components';
-import { RoomData } from '../types';
+import { RoomData, StreamConfig } from '../types';
 
 const StyledSidebar = styled.aside`
   grid-row: 1 / -1;
@@ -47,19 +47,51 @@ const Configurations = styled.section`
 
 interface IProps {
   roomData: RoomData;
+  mediaConstraints: StreamConfig;
+  setMediaConstraints: (e: any) => void;
 };
 
-const Chat: React.FC<IProps> = ({ roomData }) => {
+const SidebarButton = ({
+ children,
+ onClick,
+ icon
+}: any) => (
+  <Button
+    type="transparent"
+    animated={false}
+    onClick={onClick}
+    icon={icon}
+  >
+    {children}
+  </Button>
+)
+
+const RoomSidebar: React.FC<IProps> = ({ 
+  roomData,
+  mediaConstraints,
+  setMediaConstraints
+}) => {
+  const changeMediaConstraints = (type: 'audio' | 'video') => {
+    setMediaConstraints({
+      ...mediaConstraints,
+      [type]: !mediaConstraints[type]
+    });
+  };
+
   return (
     <StyledSidebar>
       <Header>
         <Title>{ roomData?.roomId }</Title>
       </Header>
       <Configurations>
-        <Button animated={false} type="transparent" icon="microphone">Mute microphone</Button>
-        <Button animated={false} type="transparent" icon="video">Turn video off</Button>
+        <SidebarButton icon="microphone" onClick={() => changeMediaConstraints("audio")}>
+          { mediaConstraints.audio ? 'Disable' : 'Enable' } audio
+        </SidebarButton>
+        <SidebarButton icon="video" onClick={() => changeMediaConstraints("video")}>
+          { mediaConstraints.video ? 'Disable' : 'Enable' } video
+        </SidebarButton>
       </Configurations>
     </StyledSidebar>
 )};
 
-export default Chat;
+export default RoomSidebar;
