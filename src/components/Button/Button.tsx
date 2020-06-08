@@ -9,15 +9,15 @@ const StyledButton = styled.button<any>`
   height: 2.5rem;
   border: none;
   border-radius: 3px;
-  color: ${props => props.type === 'transparent' ? 'white' : 'black'};
-  background-color: ${props => props.theme.buttonBackground[props.type]};
+  color: ${props => props.variant === 'transparent' ? 'white' : 'black'};
+  background-color: ${props => props.theme.buttonBackground[props.variant]};
   transition: 0.2s;
 
   &:hover {
     cursor: pointer;
-    ${({ animated, theme, type }) => animated && `
+    ${({ animated, theme, variant }) => animated && `
       transform: translateY(-3px);
-      box-shadow: 0px 3px 0px ${theme.buttonShadow[type]};
+      box-shadow: 0px 3px 0px ${theme.buttonShadow[variant]};
       transition: 0.2s;
     `};
   }
@@ -40,7 +40,7 @@ const StyledButton = styled.button<any>`
 
 interface IProps {
   onClick?: () => void;
-  type?: "primary" | "warning" | "error" | "transparent";
+  variant?: "primary" | "warning" | "error" | "transparent";
   animated?: boolean;
   disabled?: boolean;
   style?: CSS.Properties;
@@ -50,13 +50,13 @@ interface IProps {
 };
 
 /**
- * Renders a button components. The component supports four diferents types: "error",
+ * Renders a button components. The component supports four diferents variants: "error",
  * "primary", "warning" and "transparent". They all have different color schemes that will match
  * the desired type. 
  * 
  * @param disabled - Grays out the button and blocks any interaction with it.
  * @param animated - Defines if the button should be animated or not. 
- * @param type     - Defines the button color scheme by its type. 
+ * @param variant    - Defines the button color scheme by its variant. 
  * @param icon     - Display an icon before the button text.
  * @param styles   - Custom styles.
  *  
@@ -67,12 +67,12 @@ const Button: React.FC<IProps> = ({
   children,
   icon,
   animated = true,
-  type = "primary",
+  variant = "primary",
   disabled = false,
   ...props 
 }) => (
   <StyledButton 
-    type={type}
+    variant={variant}
     disabled={disabled} 
     animated={animated} 
     {...props}
