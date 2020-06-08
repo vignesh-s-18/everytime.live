@@ -1,14 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledInput = styled.input`
+const Wrapper = styled.div<any>`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   width: ${props => props.width || '100%'};
   height: 2.5rem;
+  border-radius: 5px;
+  box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.3);
+`;
+
+const StyledInput = styled.input<any>`
+  width: ${props => props.width || '100%'};
+  height: 2rem;
   padding-left: 10px;
   border: none;
-  border-bottom: 1px solid white;
   background-color: transparent;
   color: white;
+  outline: none;
   cursor: ${props => props.disabled && 'not-allowed'};
 
   /* 
@@ -21,8 +31,15 @@ const StyledInput = styled.input`
   }
 `;
 
+const StyledLabel = styled.label`
+  position: relative;
+  left: 10px;
+  font-size: 12px;
+`;
+
 interface IProps {
-  placeholder: string;
+  id: string;
+  label: string;
   disabled?: boolean;
   [key: string]: any;
 };
@@ -30,21 +47,28 @@ interface IProps {
 /**
  * Renders a <input /> element.
  * 
- * @param placeholder - The input's placeholder
- * @param disabled - Sets the input's disabled property. 
+ * @param disabled    - Sets the input's disabled property. 
+ * @param id          - ... 
+ * @param label       - All input fields must have an appropriated, coherent label value.
+ *                      Keep your label as short as possible.
+ * 
  * @todo Add custom styles property and formatting options.
  */
 const Input: React.FC<IProps> = ({
-  placeholder,
+  id,
+  label,
   disabled = false,
   ...props
 }) => {
   return (
-    <StyledInput
-      disabled={disabled}
-      placeholder={placeholder}
-      {...props}
-    />
+    <Wrapper>
+      <StyledLabel htmlFor={id}>{label}</StyledLabel>
+      <StyledInput
+        id={id}
+        disabled={disabled}
+        {...props}
+      />
+    </Wrapper>
   )
 };
 
