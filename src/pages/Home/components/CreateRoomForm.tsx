@@ -31,13 +31,20 @@ const CreateRoomForm: React.FC<IProps> = ({
   return (
     <Form>
       <Input
+        required={true}
         disabled={isChecking} 
-        placeholder="Your room name" 
         value={inputValue} 
-        onChange={onInputChange} 
+        onChange={onInputChange}
+        type="text"
+        label="Your room ID" 
+        id="roomId"
       />
       
-      <Button disabled={isChecking} onClick={onButtonClick}>
+      <Button 
+        disabled={isChecking} 
+        onClick={onButtonClick} 
+        type="submit"
+      >
         { isChecking ? 'Checking availability...' : 'Create a room -->' }
       </Button>
     </Form>
