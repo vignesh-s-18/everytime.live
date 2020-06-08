@@ -72,7 +72,7 @@ const SidebarButton = ({
  icon
 }: any) => (
   <Button
-    type="transparent"
+    variant="transparent"
     animated={false}
     onClick={onClick}
     icon={icon}
