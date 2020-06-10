@@ -1,14 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledVideo = styled.video`
+const StyledVideo = styled.video<any>`
   width: 100%;
   height: 100%;
   display: inline-block;
   object-fit: cover;
+
+  ${props => props.flipped && `
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  `};
 `;
 
 interface IProps {
+  flipped?: string;
   [key: string]: any;
 }
 
@@ -16,18 +22,17 @@ interface IProps {
  * This function will render a <video /> element. It's suitable
  * for the video calls.
  * 
- * @todo - Add ref prop.
+ * @param flipped - Flips the video horizontally.
+ * @todo          - Add ref prop.
  */
 const Video = React.forwardRef(
   (props: IProps, ref: any) => (
-    <video
+    <StyledVideo
       ref={ref}
-      className="testvideo"
       autoPlay 
-      playsInline 
-      width="100%" 
-      height="100%" 
-      style={{ display: 'inline-block', objectFit: 'cover' }}
+      playsInline
+      flipped={props.flipped}
+      className="testvideo"
     />
 ));
 
