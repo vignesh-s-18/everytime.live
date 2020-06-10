@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import QRCode from 'qrcode.react';
 
-import { Title, Button, Paragraph } from '../../../components';
+import { Title, Button } from '../../../components';
 import { RoomData, StreamConfig } from '../types';
+import TabsContainer from './TabsContainer';
 
 const StyledSidebar = styled.aside`
   grid-row: 1 / -1;
@@ -44,20 +44,6 @@ const Configurations = styled.section`
     margin: 1.5%;
     width: 35%;    
   }
-`;
-
-const QRCodeWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledQRCode = styled(QRCode)`
-  border: 10px solid white;
-  border-radius: 5px;
-  align-self: center;
-  justify-self: center;
 `;
 
 interface IProps {
@@ -106,9 +92,7 @@ const RoomSidebar: React.FC<IProps> = ({
           { mediaConstraints.video ? 'Disable' : 'Enable' } video
         </SidebarButton>
       </Configurations>
-      <QRCodeWrapper>
-        <StyledQRCode value={window.location.href} />
-      </QRCodeWrapper>
+      <TabsContainer />
   </StyledSidebar>
 )};
 
