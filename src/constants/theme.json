@@ -9,5 +9,9 @@
   "buttonShadow": { 
     "primary": "#0A6D3A",
     "transparent": "transparent"
-  } 
+  },
+  "inputOutline": {
+    "normal": "rgba(255, 255, 255, 0.3)",
+    "error": "red"
+  }
 }
