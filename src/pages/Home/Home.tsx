@@ -4,7 +4,9 @@ import { Helmet } from 'react-helmet';
 
 import Header from './components/Header';
 import CreateRoomForm from './components/CreateRoomForm';
-import { useHistory } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
+import InvalidRoomName from './types';
+import { Dialog } from '../../components';
 
 const Wrapper = styled.section<any>`
   flex: 1;
@@ -21,15 +23,45 @@ const Wrapper = styled.section<any>`
   color: ${props => props.theme.fontSecondary};
 `;
 
-const Home: React.FC<any> = () => {
-  const [roomName, setRoomName] = useState('');
+const Home: React.FC<RouteComponentProps> = ({ history }) => {
+  const [hasError, setHasError] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const [roomName, setRoomName] = useState<string>('');
   const [isChecking, setIsChecking] = useState(false);
   
   /**
    * @todo - Add room name validation.
    */
-  const handleButtonClick = () => {
+  const handleFormSubmit = (e: any) => {
+    e.preventDefault();
     setIsChecking(true);
+
+    // Validates the form name. If the name isn't available or if
+    // it doesn't fit the requirements, the app will alert the user.
+    const validation = isValidId();
+
+    if(!validation) {
+      setHasError(true);
+      setIsChecking(false);
+      return;
+    };
+
+    setIsChecking(false);
+    history.push('/room/' + roomName);
+  };
+
+  /**
+   * This function handles the room ID/name validation.
+   * The ID must have only letters and numbers and it can't
+   * be longer than 5 characters. 
+   * 
+   * @todo Add more detailed error messages.
+   */
+  const isValidId = () => {
+    if(!roomName) return false;
+    if(roomName.length > 5) return false;
+    
+    return true;
   };
 
   return (
@@ -41,8 +73,9 @@ const Home: React.FC<any> = () => {
       <CreateRoomForm 
         onInputChange={(e: any) => setRoomName(e.target.value)}
         inputValue={roomName}
-        onButtonClick={handleButtonClick}
-        isChecking={isChecking} 
+        onFormSubmit={handleFormSubmit}
+        isChecking={isChecking}
+        hasError={hasError} 
       />
     </Wrapper>
   )

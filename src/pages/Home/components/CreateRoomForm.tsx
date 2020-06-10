@@ -18,31 +18,34 @@ const Form = styled.form`
 interface IProps {
   onInputChange: (e: any) => void;
   inputValue: string | null;
-  onButtonClick: () => void;
+  onFormSubmit: (e: any) => void;
   isChecking: boolean;
+  hasError: boolean;
 };
 
 const CreateRoomForm: React.FC<IProps> = ({
   onInputChange,
   inputValue,
-  onButtonClick,
-  isChecking
+  onFormSubmit,
+  isChecking,
+  hasError
 }) => {
   return (
-    <Form>
+    <Form onSubmit={onFormSubmit}>
       <Input
+        error={hasError}
         required={true}
         disabled={isChecking} 
         value={inputValue} 
         onChange={onInputChange}
         type="text"
+        name="roomName"
         label="Your room ID" 
         id="roomId"
       />
       
       <Button 
         disabled={isChecking} 
-        onClick={onButtonClick} 
         type="submit"
       >
         { isChecking ? 'Checking availability...' : 'Create a room -->' }
