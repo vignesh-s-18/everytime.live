@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axe from 'react-axe';
+import adapter from 'webrtc-adapter';
 
+import './socketInstance';
 import App from './App';
 
 import * as serviceWorker from './serviceWorker';
