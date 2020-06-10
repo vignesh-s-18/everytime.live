@@ -8,7 +8,11 @@ const Wrapper = styled.div<any>`
   width: ${props => props.width || '100%'};
   height: 2.5rem;
   border-radius: 5px;
-  box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.3);
+  box-shadow: 0px 0px 0px 1px ${props => ( 
+    props.error
+      ? props.theme.inputOutline.error
+      : props.theme.inputOutline.normal
+  )};
 `;
 
 const StyledInput = styled.input<any>`
@@ -40,6 +44,7 @@ const StyledLabel = styled.label`
 interface IProps {
   id: string;
   label: string;
+  error?: boolean;
   disabled?: boolean;
   [key: string]: any;
 };
@@ -51,17 +56,18 @@ interface IProps {
  * @param id          - ... 
  * @param label       - All input fields must have an appropriated, coherent label value.
  *                      Keep your label as short as possible.
- * 
+ * @param error       - If true, the input will be highlighted.
  * @todo Add custom styles property and formatting options.
  */
 const Input: React.FC<IProps> = ({
   id,
   label,
+  error = false,
   disabled = false,
   ...props
 }) => {
   return (
-    <Wrapper>
+    <Wrapper error={error}>
       <StyledLabel htmlFor={id}>{label}</StyledLabel>
       <StyledInput
         id={id}
