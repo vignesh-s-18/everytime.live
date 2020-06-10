@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import io from 'socket.io-client';
 import styled from 'styled-components';
+
+import socket from '../../socketInstance';
+import pcConfig from '../../constants/pcConfig.json';
 
 import { RoomData, StreamConfig } from './types';
 import RoomSidebar from './components/RoomSidebar';
 import RoomVideos from './components/RoomVideos';
 import LocalStream from './components/LocalStream';
+import RemoteStream from './components/RemoteStream';
 
 const Wrapper = styled.section`
   width: 100%;
@@ -25,33 +28,85 @@ const Wrapper = styled.section`
 
 const Room = () => {
   const [roomData, setRoomData] = useState<RoomData>(null);
+  const [peerConnection,] = useState(new RTCPeerConnection(pcConfig as RTCConfiguration));
   const [mediaConstraints, setMediaConstraints] = useState<StreamConfig>({
     video: true,
     audio: true
   });
   
   const { roomId } =  useParams();
+  
+  // WEBRTC FUNCTIONS
+  
+  /**
+   * This function will create the peer offer, attach 
+   * it to its local description and also send it to
+   * the signaling server.
+   */
+  const handleOfferCreation = async () => {
+    console.warn('--- CREATING OFFER ---');
+    
+    const offer = await peerConnection.createOffer();
+    const sessionDescription = await new RTCSessionDescription(offer);
+    await peerConnection.setLocalDescription(sessionDescription);
 
-  useEffect(() => {
-    setRoomData({ roomId });
-    setUpSocketIo();
-  }, []);
+    socket.emit('offer', offer);
+  }
 
+  const handleReceivedOffer = async (data: any) => {
+    console.warn('--- OFFER RECEIVED ---');
+
+    const sessionDescription = await new RTCSessionDescription(data);
+    await peerConnection.setRemoteDescription(sessionDescription);
+
+    const answer = await peerConnection.createAnswer();
+    await peerConnection.setLocalDescription(answer);
+    socket.emit('answer', answer);
+  }
+
+  const handleReceivedAnswer = async (data: any) => {
+    console.warn('--- ANSWER RECEIVED ---');
+
+    const sessionDescription = new RTCSessionDescription(data);
+    await peerConnection.setRemoteDescription(sessionDescription);
+  };
+
+  const handleLocalIceCandidate = () => {
+    peerConnection.onicecandidate = (e: RTCPeerConnectionIceEvent) => {
+      if(!e || !e.candidate) return;
+      socket.emit('candidate', e.candidate);
+    };
+  };
+
+  const handleReceivedIceCandidate = async (msg: any) => {
+    if(!msg) return;
+
+    console.log('---RECEIVED ICE CANDIDATE---');
+    await peerConnection.addIceCandidate(new RTCIceCandidate(msg));
+  };
+  
   /**
    * @todo - Add functionality.
    */
-  const setUpSocketIo = () => { /*
-    const socket = io('http://localhost:8080/');
+  const setUpSocketIo = () => {
+    console.warn('CONNECTED?', socket.connected);
     socket.emit('join-room', roomId);
     socket.emit('init-video', null);
-    socket.on('test', console.log); */
+    console.warn('socket........');
+    
+    socket.on('user-joined', handleOfferCreation);
+    socket.on('offer', handleReceivedOffer);
+    socket.on('answer', handleReceivedAnswer);
+    socket.on('candidate', handleReceivedIceCandidate);
   };
+  
+  useEffect(() => {
+    setRoomData({ roomId });
+    setUpSocketIo();
 
-  const getLocalMedia = async () => {
-    const stream: MediaStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-    return stream;
-  }
-
+    handleLocalIceCandidate();
+  }, [roomId]);
+  
   return (
     <Wrapper>
       <Helmet>
@@ -63,10 +118,11 @@ const Room = () => {
         mediaConstraints={mediaConstraints} 
       />
       <RoomVideos>
-        <LocalStream 
-          getLocalMedia={getLocalMedia}
+        <LocalStream
+          peerConnection={peerConnection}
           mediaConstraints={mediaConstraints}
         />
+        <RemoteStream peerConnection={peerConnection} />
       </RoomVideos>
     </Wrapper>
   )

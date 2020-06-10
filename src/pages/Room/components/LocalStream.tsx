@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Video, LoadingStream, OnlyAudioStream } from '../../../components';
-import socket from '../../../socketInstance';
 import { StreamConfig } from '../types';
 
 const StreamWrapper = styled.div`
@@ -15,44 +14,53 @@ const StreamWrapper = styled.div`
 `;
 
 interface IProps {
-  getLocalMedia: any;
   mediaConstraints: StreamConfig;
+  peerConnection: RTCPeerConnection;
   [key: string]: any;
 };
 
 const LocalStream: React.FC<IProps> = ({ 
-  getLocalMedia, 
   mediaConstraints,
+  peerConnection,
   ...props 
 }) => {
   const [loadingLocal, setLoadingLocal] = useState(true);
-  const [peerConnection, setPC] = useState<RTCPeerConnection|null>(null);
   const [mediaStream, setMediaStream] = useState<MediaStream|null>(null);
 
-  const { audio, video } = mediaConstraints as MediaStreamConstraints;
+  const { audio, video } = mediaConstraints;
   const elemRef: any = useRef();
 
-  const handlePCOffer = async () => {
-    if(!peerConnection) return;
-    const offer = await peerConnection.createOffer();
-    peerConnection.setLocalDescription(offer);    
-  }
-
-  const initLocalPeer = () => {
-    const pc = new RTCPeerConnection();
-    setPC(pc);
-
+  const addMediaStreamToPeer = () => {
     if(!mediaStream) return;
-    for(const track of mediaStream.getTracks()) {
-      pc.addTrack(track);
+
+    for(const track of mediaStream.getVideoTracks()) {
+      if(!mediaConstraints.video) {
+        track.enabled = false;
+      };
+
+      peerConnection.addTrack(track, mediaStream);
+    };
+
+    for(const track of mediaStream.getAudioTracks()) {
+      if(!mediaConstraints.audio) {
+        track.enabled = false;
+      };
+
+      peerConnection.addTrack(track, mediaStream);
     };
   };
 
-  useEffect(initLocalPeer, [mediaStream]);
-
   useEffect(() => {
+    const getLocalMedia = async () => {
+      const stream: MediaStream = await navigator
+        .mediaDevices
+        .getUserMedia(mediaConstraints);
+
+      return stream;
+    };
+
     getLocalMedia().then((stream: MediaStream) => {
-      if(!stream || !elemRef.current) return;
+      if(!elemRef.current) return;
 
       elemRef.current.srcObject = stream;
       setMediaStream(stream);
@@ -60,9 +68,28 @@ const LocalStream: React.FC<IProps> = ({
     });
   }, [mediaConstraints]);
 
+  useEffect(addMediaStreamToPeer, [mediaStream]);
+
+  /**
+   * If the user leaves the /room and navigates to the home screen,
+   * the stream won't stop recording. The following function will
+   * clean up all the remaining tracks that are still active.
+   */
+  /*useEffect(() => {
+    return function cleanup() {
+      if(!mediaStream) return;
+
+      for(const track of mediaStream.getTracks()) {
+        if(track.readyState !== 'live') return;
+        track.stop();
+      }
+    } 
+  });*/
+
   return (
     <StreamWrapper>
       <Video
+        flipped
         ref={elemRef}
         {...props} 
       />
