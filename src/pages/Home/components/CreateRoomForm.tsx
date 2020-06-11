@@ -51,7 +51,7 @@ const CreateRoomForm: React.FC<IProps> = ({
         { isChecking ? 'Checking availability...' : 'Create a room -->' }
       </Button>
     </Form>
-  )
-}
+  );
+};
 
 export default CreateRoomForm;
