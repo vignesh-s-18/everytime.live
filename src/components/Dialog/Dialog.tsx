@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styled from 'styled-components';
+//import styled from 'styled-components';
+
 /*import { Dialog } from '@reach/dialog';
 
 const StyledDialog = styled(Dialog)`

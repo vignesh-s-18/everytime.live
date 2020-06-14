@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 
 const StyledButton = styled.button<any>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 2.5rem;
   border: none;
@@ -12,6 +15,11 @@ const StyledButton = styled.button<any>`
   color: ${props => props.variant === 'transparent' ? 'white' : 'black'};
   background-color: ${props => props.theme.buttonBackground[props.variant]};
   transition: 0.2s;
+
+  & > svg {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
 
   &:hover {
     cursor: pointer;
@@ -77,7 +85,7 @@ const Button: React.FC<IProps> = ({
     animated={animated} 
     {...props}
   >
-    { icon && <FontAwesomeIcon aria-hidden={true} icon={icon as IconName} /> } 
+    { icon && <FontAwesomeIcon aria-hidden={true} icon={icon as IconName} /> }
     { children }
   </StyledButton>
 );
