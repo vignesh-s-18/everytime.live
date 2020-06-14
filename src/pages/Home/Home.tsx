@@ -5,8 +5,6 @@ import { Helmet } from 'react-helmet';
 import Header from './components/Header';
 import CreateRoomForm from './components/CreateRoomForm';
 import { RouteComponentProps } from 'react-router-dom';
-import InvalidRoomName from './types';
-import { Dialog } from '../../components';
 
 const Wrapper = styled.section<any>`
   flex: 1;
@@ -25,7 +23,6 @@ const Wrapper = styled.section<any>`
 
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
   const [hasError, setHasError] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [roomName, setRoomName] = useState<string>('');
   const [isChecking, setIsChecking] = useState(false);
   
