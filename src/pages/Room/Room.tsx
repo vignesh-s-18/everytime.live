@@ -44,55 +44,63 @@ const Room = () => {
    * the signaling server.
    */
   const handleOfferCreation = async () => {
-    console.warn('--- CREATING OFFER ---');
-    
-    const offer = await peerConnection.createOffer();
-    const sessionDescription = await new RTCSessionDescription(offer);
+    console.warn('--- CREATING AND SENDING OFFER ---');
+    const offer = await peerConnection.createOffer();    
+    const sessionDescription = new RTCSessionDescription(offer);
     await peerConnection.setLocalDescription(sessionDescription);
-
+    
     socket.emit('offer', offer);
-  }
+    return;
+  };
 
   const handleReceivedOffer = async (data: any) => {
     console.warn('--- OFFER RECEIVED ---');
 
-    const sessionDescription = await new RTCSessionDescription(data);
+    const sessionDescription = new RTCSessionDescription(data);
     await peerConnection.setRemoteDescription(sessionDescription);
-
+    console.warn('--- ADDED REMOTE DESC ---');
+    
     const answer = await peerConnection.createAnswer();
     await peerConnection.setLocalDescription(answer);
     socket.emit('answer', answer);
-  }
+  };
 
   const handleReceivedAnswer = async (data: any) => {
     console.warn('--- ANSWER RECEIVED ---');
 
     const sessionDescription = new RTCSessionDescription(data);
     await peerConnection.setRemoteDescription(sessionDescription);
+
+    // As both peers need to create offers,
+    // the following block will ensure that
+    // every user receives and sends the required
+    // data.
+    /*if(!hasCreatedOffer) {
+      setHasCreatedOffer(true);
+      handleOfferCreation();
+    };*/
   };
 
   const handleLocalIceCandidate = () => {
-    peerConnection.onicecandidate = (e: RTCPeerConnectionIceEvent) => {
-      if(!e || !e.candidate) return;
+    peerConnection.addEventListener('icecandidate', e => {
       socket.emit('candidate', e.candidate);
-    };
+    });
   };
 
   const handleReceivedIceCandidate = async (msg: any) => {
     if(!msg) return;
 
-    console.log('---RECEIVED ICE CANDIDATE---');
-    await peerConnection.addIceCandidate(new RTCIceCandidate(msg));
+    console.log('--- RECEIVED ICE CANDIDATE ---');
+    const iceCandidate = new RTCIceCandidate(msg);
+    await peerConnection.addIceCandidate(iceCandidate);
   };
   
   /**
    * @todo - Add functionality.
    */
   const setUpSocketIo = () => {
-    console.warn('CONNECTED?', socket.connected);
     socket.emit('join-room', roomId);
     socket.emit('init-video', null);
-    console.warn('socket........');
     
     socket.on('user-joined', handleOfferCreation);
     socket.on('offer', handleReceivedOffer);
@@ -103,7 +111,7 @@ const Room = () => {
   useEffect(() => {
     setRoomData({ roomId });
     setUpSocketIo();
-
+    
     handleLocalIceCandidate();
   }, [roomId]);
   
