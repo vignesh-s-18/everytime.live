@@ -38,7 +38,7 @@ const STab = styled(Tab)`
   }
 `;
 
-const QRCodeWrapper = styled.div`
+const QRCodeWrapper = styled(TabPanel)`
   flex: 1;
   display: flex;
   justify-content: center;
@@ -59,9 +59,9 @@ const TabsContainer = () => {
         <STab selectedClassName={'selected'}>QR Code</STab>
         <STab selectedClassName={'selected'}>Chat</STab>
       </STabList>
-        <QRCodeWrapper>
-          <StyledQRCode value={window.location.href} />
-        </QRCodeWrapper>
+      <QRCodeWrapper>
+        <StyledQRCode value={window.location.href} />
+      </QRCodeWrapper>
     </STabs>
   )
 };
