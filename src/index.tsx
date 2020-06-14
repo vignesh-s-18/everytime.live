@@ -17,7 +17,8 @@ import {
   faMicrophoneSlash,
   faVideo,
   faVideoSlash,
-  faCircleNotch
+  faCircleNotch,
+  faSyncAlt
 } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -26,7 +27,8 @@ library.add(
   faMicrophone,
   faVideoSlash,
   faVideo,
-  faCircleNotch
+  faCircleNotch,
+  faSyncAlt
 );
 
 ReactDOM.render(
