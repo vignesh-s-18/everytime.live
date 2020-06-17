@@ -7,6 +7,7 @@ import Dialog from './Dialog/Dialog';
 import Title from './Title/Title';
 import Input from './Input/Input';
 import Video from './Video/Video';
+import Modal from './Modal/Modal';
 
 export {
   OnlyAudioStream,
@@ -17,5 +18,6 @@ export {
   Button,
   Title,
   Input,
-  Video
+  Video,
+  Modal
 };
