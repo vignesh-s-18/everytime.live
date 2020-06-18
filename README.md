@@ -19,3 +19,7 @@ We have many features that we're planning to release in the coming versions. Her
   - [X] QR Code.
   - [X] Keyboard navigation.
   - [X] Custom room names.
+
+## .env file
+
+If you need to run this project, don't forget to update your .env file. Please check the `env.example` file for the fields you'll need to fill up.
