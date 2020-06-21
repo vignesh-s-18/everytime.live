@@ -11,6 +11,7 @@ import RoomSidebar from './components/RoomSidebar';
 import RoomVideos from './components/RoomVideos';
 import LocalStream from './components/LocalStream';
 import RemoteStream from './components/RemoteStream';
+import ReactGA from '../../Analytics';
 
 const Wrapper = styled.section`
   width: 100%;
@@ -44,7 +45,8 @@ const Room = () => {
    * the signaling server.
    */
   const handleOfferCreation = async () => {
-    console.warn('--- CREATING AND SENDING OFFER ---');
+    //console.warn('--- CREATING AND SENDING OFFER ---');    
+
     const offer = await peerConnection.createOffer();    
     const sessionDescription = new RTCSessionDescription(offer);
     await peerConnection.setLocalDescription(sessionDescription);
@@ -54,11 +56,11 @@ const Room = () => {
   };
 
   const handleReceivedOffer = async (data: any) => {
-    console.warn('--- OFFER RECEIVED ---');
+    //console.warn('--- OFFER RECEIVED ---');
 
     const sessionDescription = new RTCSessionDescription(data);
     await peerConnection.setRemoteDescription(sessionDescription);
-    console.warn('--- ADDED REMOTE DESC ---');
+    //console.warn('--- ADDED REMOTE DESC ---');
     
     const answer = await peerConnection.createAnswer();
     await peerConnection.setLocalDescription(answer);
@@ -66,7 +68,7 @@ const Room = () => {
   };
 
   const handleReceivedAnswer = async (data: any) => {
-    console.warn('--- ANSWER RECEIVED ---');
+    //console.warn('--- ANSWER RECEIVED ---');
 
     const sessionDescription = new RTCSessionDescription(data);
     await peerConnection.setRemoteDescription(sessionDescription);
@@ -75,10 +77,7 @@ const Room = () => {
     // the following block will ensure that
     // every user receives and sends the required
     // data.
-    /*if(!hasCreatedOffer) {
-      setHasCreatedOffer(true);
-      handleOfferCreation();
-    };*/
+    handleOfferCreation();
   };
 
   const handleLocalIceCandidate = () => {
@@ -113,6 +112,30 @@ const Room = () => {
     setUpSocketIo();
     
     handleLocalIceCandidate();
+  }, [roomId]);
+
+  // ANALYTICS FUNCTIONS
+
+  // This function will send a time event to the 
+  // GA every 2 seconds. This helps us to sum up
+  // how much time is being spent on our app.
+  const sendTimeSpent = () => {
+    ReactGA.timing({
+      category: 'Room',
+      variable: 'time-spent',
+      value: 2000
+    });
+  };
+
+  // Sends a pageview to the analytics.
+  useEffect(() => {
+    ReactGA.pageview('/room', undefined, roomId);
+
+    const timingInterval = setInterval(sendTimeSpent, 2000);
+
+    return () => {
+      clearInterval(timingInterval);
+    };
   }, [roomId]);
   
   return (

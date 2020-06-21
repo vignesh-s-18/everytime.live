@@ -39,7 +39,8 @@ ReactDOM.render(
 );
 
 if(process.env.NODE_ENV !== 'production') {
-  axe(React, ReactDOM, 1000);
+  // broken release.
+  //axe(React, ReactDOM, 1000, undefined, undefined);
 }
 
 // If you want your app to work offline and load faster, you can change

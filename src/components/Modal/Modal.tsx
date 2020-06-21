@@ -59,16 +59,28 @@ const Footer = styled.footer`
 
 interface IProps {
   onClose?: () => void;
+  onConfirm?: () => void;
   buttonText?: string;
   children?: any;
   title: string;
+  [key: string]: any;
 };
 
+/**
+ * 
+ * @param onClose    - called when the modal closes.
+ * @param title      - The title of the modal.
+ * @param onConfirm  - The modal has two buttons. When the confimartion one is clicked,
+ *                     this function will be called. 
+ * @param buttonText - The confirmation button text.
+ */
 const Modal: React.FC<IProps> = ({
   onClose,
   title,
-  buttonText,
-  children
+  onConfirm,
+  children,
+  buttonText = 'Ok -->',
+  ...props
 }) => {
   const modalRef = React.createRef<HTMLDivElement>();
   
@@ -140,13 +152,21 @@ const Modal: React.FC<IProps> = ({
 
   return createPortal((
     <Background>
-      <StyledModal ref={modalRef}>
+      <StyledModal 
+        ref={modalRef} 
+        role={"dialog"}
+        aria-labelledby={"modalTitle"}
+        {...props}
+      >
         <Header>
-          <Title>{title}</Title>
+          <Title id={"modalTitle"}>{title}</Title>
         </Header>
         { children }
         <Footer>
-          <Button>{ buttonText || 'Ok -->' }</Button>
+          <Button variant="transparent" animated={false} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button onClick={onConfirm}>{ buttonText }</Button>
         </Footer>
       </StyledModal>
     </Background>

@@ -29,6 +29,7 @@ const RemoteStream: React.FC<IProps> = ({ peerConnection }) => {
   return (
     <StreamWrapper>
       <Video 
+        flipped
         ref={elemRef}
       />
     </StreamWrapper>

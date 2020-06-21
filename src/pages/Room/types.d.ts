@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    hasCreatedOffer: boolean;
+  }
+}
+
 type User = {
   name: string;
 };

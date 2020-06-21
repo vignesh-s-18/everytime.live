@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import styled from 'styled-components';
 
 import Header from './components/Header';
 import CreateRoomForm from './components/CreateRoomForm';
+import AgreementModal from './components/AgreementModal';
+
 import { RouteComponentProps } from 'react-router-dom';
+import ReactGA from '../../Analytics';
 
 const Wrapper = styled.section<any>`
   flex: 1;
@@ -21,7 +24,8 @@ const Wrapper = styled.section<any>`
   color: ${props => props.theme.fontSecondary};
 `;
 
-const Home: React.FC<RouteComponentProps> = ({ history }) => {
+const Home: React.FC<RouteComponentProps> = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [roomName, setRoomName] = useState<string>('');
   const [isChecking, setIsChecking] = useState(false);
@@ -44,7 +48,7 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     };
 
     setIsChecking(false);
-    history.push('/room/' + roomName);
+    setIsModalOpen(true);
   };
 
   /**
@@ -61,8 +65,19 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     return true;
   };
 
+  useEffect(() => {
+    ReactGA.pageview('/');
+  }, []);
+
   return (
     <Wrapper>
+      { isModalOpen && (
+          <AgreementModal
+            isOpen={isModalOpen}
+            roomName={roomName} 
+            onClose={() => setIsModalOpen(false)} 
+          /> 
+      )}
       <Helmet>
         <title>Home</title>
       </Helmet>
