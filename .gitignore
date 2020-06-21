@@ -25,3 +25,5 @@ yarn-error.log*
 
 rootCA.key
 rootCA.pem
+# Local Netlify folder
+.netlify
