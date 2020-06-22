@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import QRCode from 'qrcode.react';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
+import { useParams } from 'react-router-dom';
 
 const STabs = styled(Tabs)`
   width: 100%;
@@ -53,6 +54,8 @@ const StyledQRCode = styled(QRCode)`
 `;
 
 const TabsContainer = () => {
+  const { roomId } = useParams();
+
   return (
     <STabs>
       <STabList>
@@ -60,7 +63,7 @@ const TabsContainer = () => {
         <STab selectedClassName={'selected'}>Chat</STab>
       </STabList>
       <QRCodeWrapper>
-        <StyledQRCode value={window.location.href} />
+        <StyledQRCode value={`${window.location.host}/#${roomId}`} />
       </QRCodeWrapper>
     </STabs>
   )

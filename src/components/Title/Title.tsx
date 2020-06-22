@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const StyledTitle = styled.h1<any>`
   font-family: 'Quicksand', sans-serif !important;
   font-size: 2.5rem;
-  color: ${props => props.theme.fontPrimary};
+  color: var(--font-primary);
 `;
 
 interface IProps {

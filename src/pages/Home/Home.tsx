@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 
 import Header from './components/Header';
 import CreateRoomForm from './components/CreateRoomForm';
 import AgreementModal from './components/AgreementModal';
 
-import { RouteComponentProps } from 'react-router-dom';
 import ReactGA from '../../Analytics';
 
 const Wrapper = styled.section<any>`
@@ -20,16 +20,18 @@ const Wrapper = styled.section<any>`
   align-items: flex-start;
   font-family: 'Quicksand';
   font-size: 1.5rem;
-  background-color: #090909;
+  background-color: var(--background-color);
   color: ${props => props.theme.fontSecondary};
 `;
 
-const Home: React.FC<RouteComponentProps> = () => {
+const Home: React.FC<any> = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [roomName, setRoomName] = useState<string>('');
   const [isChecking, setIsChecking] = useState(false);
   
+  const location = useLocation();
+
   /**
    * @todo - Add room name validation.
    */
@@ -67,6 +69,17 @@ const Home: React.FC<RouteComponentProps> = () => {
 
   useEffect(() => {
     ReactGA.pageview('/');
+  }, []);
+
+  // Checks if the user comes from the QR code or referral link.
+  useEffect(() => {
+    if(!location.hash) return;
+    
+    // Gets the room id from the url hash and formats it.
+    const roomIdFromHash = location.hash.split('#')[1];
+
+    setIsModalOpen(true);
+    setRoomName(roomIdFromHash);
   }, []);
 
   return (

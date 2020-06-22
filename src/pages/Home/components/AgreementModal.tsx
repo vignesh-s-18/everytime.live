@@ -31,7 +31,11 @@ const AgreementModal: React.FC<IProps> = ({
 
   const handleConfirmation = () => {
     ReactGA.event({ category: 'Terms', action: 'Accepted' });
-    history.push('room/' + roomName);
+
+    // The user cannot open the room directly, he must be redirected to the room.
+    // Otherwise, some connections problems may occur.
+    // The history state - {allow:true} - will make the app work as expected.
+    history.push('room/' + roomName, { allow: true });
   };
 
   useEffect(() => {

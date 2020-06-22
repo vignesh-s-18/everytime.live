@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const StyledParagraph = styled.p<any>`
   font-size: 1rem;
   font-family: 'Inter', sans-serif !important;
-  color: ${props => props.theme.fontSecondary || 'red'}
+  color: var(--font-secondary);
 `;
 
 interface IProps {

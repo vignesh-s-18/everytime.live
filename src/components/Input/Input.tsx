@@ -25,8 +25,7 @@ const StyledInput = styled.input<any>`
   padding-left: 10px;
   border: none;
   background-color: transparent;
-  color: white;
-  outline: none;
+  color: var(--font-secondary);
   cursor: ${props => props.disabled && 'not-allowed'};
 
   /* 
@@ -35,7 +34,7 @@ const StyledInput = styled.input<any>`
     the AAA acessibility standards. 
   */
   &::placeholder {
-    color: #B0B0B0;
+    color: var(--placeholder-color);
   }
 
   &:focus + label, &:valid + label {
@@ -53,6 +52,7 @@ const StyledLabel = styled.label`
   left: 10px;
   font-size: 1rem;
   transition: .1s;
+  color: var(--placeholder-color);
 `;
 
 interface IProps {
