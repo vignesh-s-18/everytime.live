@@ -14,7 +14,7 @@ const Wrapper = styled.div<any>`
   grid-template-rows: ${props => props.orientation === 'horizontal' ? '50% 50%' : '100%'};
 `;
 
-const FlipOrientationIcon = styled(FontAwesomeIcon)`
+const FlipOrientationIcon = styled<any>(FontAwesomeIcon)`
   position: absolute;
   margin: 0;
   padding: 0;
@@ -31,7 +31,11 @@ const FlipOrientationIcon = styled(FontAwesomeIcon)`
 const RoomVideos: React.FC<any> = ({ children }) => {
   const [orientation, setOrientation] = useState<TOrientation>('vertical');
 
-  const handleIconClick = () => {
+  const handleIconClick = (e: KeyboardEvent) => {
+    // If the key pressed isn't the space or the enter key,
+    // do nothing.
+    if(e.keyCode !== 32 && e.keyCode !== 13) return;
+    
     setOrientation(orientation === 'horizontal' ? 'vertical' : 'horizontal');
   };
 
