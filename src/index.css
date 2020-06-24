@@ -5,13 +5,6 @@
   --placeholder-color: #B0B0B0;
 }
 
-[data-theme="light"] {
-  --background-color: #FFF;
-  --font-primary: #000;
-  --font-secondary: rgb(41, 41, 41);
-  --placeholder-color: rgb(58, 58, 58);
-}
-
 * {
   margin: 0;
   padding: 0;
