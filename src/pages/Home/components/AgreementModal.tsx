@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
-import { Modal } from '../../../components';
+import { Modal, Paragraph } from '../../../components';
 import ReactGA from '../../../Analytics';
 
 const Wrapper = styled.div`
@@ -51,6 +51,25 @@ const AgreementModal: React.FC<IProps> = ({
       aria-modal={isOpen}
     >
       <Wrapper>
+        <Paragraph>This is not a complete terms of service nor a privacy police.</Paragraph>
+        <br/>
+        <Paragraph>
+          We just want to be trasparent about the data we collect.
+          While this website by itself doesn't collect any data from you,
+          our cookies do. These cookies are only used for analytical purposes,
+          and the data they collect is important to us so we can check how many people
+          are using this app.
+          <br />
+          <br />
+          You have control over the data they collect and you can also disable all
+          cookies in this website clicking <Link to="/cookies">here.</Link>
+          <br />
+          <br />
+          We're thankful for your support and understanding.
+          <br />
+          <br />
+          Let's videochat!
+        </Paragraph>
       </Wrapper>
     </Modal>
   );

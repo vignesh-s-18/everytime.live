@@ -44,6 +44,10 @@ const QRCodeWrapper = styled(TabPanel)`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  & > * {
+    margin: 5%;
+  }
 `;
 
 const StyledQRCode = styled(QRCode)`

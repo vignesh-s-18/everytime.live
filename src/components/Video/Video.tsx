@@ -11,6 +11,11 @@ const StyledVideo = styled.video<any>`
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
   `};
+
+  &:picture-in-picture {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+  }
 `;
 
 interface IProps {

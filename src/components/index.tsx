@@ -1,3 +1,4 @@
+import CookieConsentAlert from './CookieConsentAlert/CookieConsentAlert';
 import OnlyAudioStream from './OnlyAudioStream/OnlyAudioStream';
 import LoadingStream from "./LoadingStream/LoadingStream";
 import Paragraph from './Paragraph/Paragraph';
@@ -8,8 +9,10 @@ import Title from './Title/Title';
 import Input from './Input/Input';
 import Video from './Video/Video';
 import Modal from './Modal/Modal';
+import Alert from './Alert/Alert';
 
 export {
+  CookieConsentAlert,
   OnlyAudioStream,
   LoadingStream,
   Paragraph,
@@ -19,5 +22,6 @@ export {
   Title,
   Input,
   Video,
-  Modal
+  Modal,
+  Alert
 };
