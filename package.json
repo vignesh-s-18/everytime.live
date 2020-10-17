@@ -65,7 +65,7 @@
     "@types/moment": "^2.13.0",
     "@types/node": "^12.12.47",
     "@types/qrcode.react": "^1.0.1",
-    "@types/react": "^16.9.38",
+    "@types/react": "^16.9.53",
     "@types/react-axe": "^3.1.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-ga": "^2.3.0",
